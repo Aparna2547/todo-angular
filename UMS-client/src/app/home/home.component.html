@@ -1,0 +1,88 @@
+<app-navbar class="mb-4"></app-navbar>
+<div class="bg-gray-200 h-screen">
+    <p class="relative text-center font-bold text-2xl mt-10">TODO</p>
+    <div>
+        
+   <div class="bg-white lg:mx-48 p-3">
+    <!-- <div class="flex justify-end ">
+        <p-messages></p-messages>
+       </div> -->
+            <div class="flex justify-between">
+                <form class="w-full flex" [formGroup]="addNote" (ngSubmit)="onSubmit()">
+                    <div class="flex-grow">
+                        <input type="text" placeholder="Add new task.." formControlName="content"
+                            class=" outline-none border border-gray-300 w-full px-2 py-1 form-control"
+                            [ngClass]="{'is-invalid':submit && notes.content.errors}">
+                            <div *ngIf="submit && notes.content.errors" class="text-red-700">enter something..</div>
+
+                    </div>
+                    <div class="ml-2">
+                        <button class="bg-green-800 text-white font-bold px-3 py-1" type="submit">Add Note</button>
+                    </div>
+                </form>
+            </div>
+            <app-seach (searchTextChanged)="onSearchTextEntered($event)"></app-seach>
+
+            
+            <div class="lg:mt-5 mt-2 p-3">
+                <!-- <div *ngIf="allNote.length > 0; else noNotes"> -->
+                    <div *ngFor="let item of pagedNotes">
+
+                <div *ngIf="searchText === '' || item.content.toLowerCase().includes(searchText)"  class="outline-none border rounded-lg mt-2 border-gray-300 w-full px-2 py-1 flex justify-between">
+                        <div>{{item.content}}</div>
+                        <div>
+                            <ul class="flex gap-1">
+                                <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="text-blue-700" type="button" (click)="openEditModal(item._id)">
+                                    Edits
+                                </button>
+                                <li class="text-red-800 cursor-pointer" (click)="deleteNote(item._id)">Delete</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                   <mat-paginator
+                   [length]="allNote.length"
+                   [pageSize] ="pageSize"
+                   [pageSizeOptions] = "pageSizeOptions"
+                   (page)="onPageChange($event)"
+                   >
+                    </mat-paginator>
+                </div>
+                <ng-template #noNotes>  
+                    <div class="lg:mt-10 mt-2 p-3">
+                        <p>No notes found.</p>
+                    </div>
+                </ng-template>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+  
+<div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Note</h3>
+        </div>
+        <form [formGroup]="editNote" (ngSubmit)="oneNote && handleEdit(oneNote._id)">
+          <div class="p-4 md:p-5 space-y-4">
+            <input type="text" formControlName="content" [value]="oneNote?.content" class="w-full">
+          </div>
+          <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Changes</button>
+            <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+<nav class="bg-green-900  w-full p-2">
+<div  class="flex justify-between text-white">
+<div class="font-bold text-3xl">
+    Angular<i class="pi pi-home"></i>
+
+</div>
+<div class="flex mt-2 me-3 cursor-pointer">
+    <mat-icon (click)="toggleMenu()">person </mat-icon> 
+</div>
+</div>
+</nav>
+<div *ngIf="showMenu" class="flex justify-end bg-gray-200">
+    <div class="bg-white w-[100px] py-2 px-2 cursor-pointer">
+        <ul>
+            <li class="border-b border-gray-200" [routerLink]="['/profile']">Profile</li>
+            <li (click)="logout()">Logout</li>
+        </ul>
+    </div>
+</div>  
